@@ -47,6 +47,14 @@ create table if not exists sign (
   id int primary key auto_increment,
   video_url varchar(255) not null,
   variation_id int,
+
+  articulation_point varchar(255),
+  hand_configuration varchar(255),
+  contact_region varchar(255),
+
+  other_description text,
+  type enum("one_hand", "two_different", "two_same", "face"),
+
   constraint `fk_sign_variation` foreign key (variation_id) references variation (id),
   word_id int not null,
   constraint `fk_sign_word` foreign key (word_id) references word (id),

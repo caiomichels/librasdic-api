@@ -12,4 +12,5 @@ import br.udesc.librasdic_api.entity.Word;
 public interface SignRepository extends JpaRepository<Sign, Long> {
 
   List<Sign> findByWord(Word word);
+  List<Sign> findByWord_Id(Long id);
 }

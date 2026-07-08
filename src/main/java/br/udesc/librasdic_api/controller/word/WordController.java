@@ -151,27 +151,4 @@ public class WordController {
 
     return ResponseEntity.ok(new WordResponse(word));
   }
-
-  @PostMapping("/set/main")
-  public ResponseEntity<WordResponse> setMainSign(@RequestBody WordSignRequest request) {
-
-    Optional<Word> word = repository.findById(request.wordId());
-    Optional<Sign> sign = signRepository.findById(request.signId());
-
-    if (word.isEmpty() || sign.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
-
-    if (sign.get().getWord().getId() != word.get().getId()) {
-      return ResponseEntity.badRequest().build();
-    }
-
-    Word wordS = word.get();
-
-    wordS.setMainSign(sign.get());
-
-    repository.save(wordS);
-
-    return ResponseEntity.ok().build();
-  }
 }

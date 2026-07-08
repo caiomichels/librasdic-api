@@ -30,6 +30,7 @@ import br.udesc.librasdic_api.repository.WordRepository;
 import tools.jackson.databind.ObjectMapper;
 import br.udesc.librasdic_api.controller.sign.dto.SignRequest;
 import br.udesc.librasdic_api.controller.sign.dto.SignResponse;
+import br.udesc.librasdic_api.controller.sign.dto.SignSimpleResponse;
 import br.udesc.librasdic_api.entity.Hand;
 import br.udesc.librasdic_api.entity.Origin;
 import br.udesc.librasdic_api.entity.Sign;
@@ -59,15 +60,22 @@ public class SignController {
     return ResponseEntity.ok(repository.findAll().stream().map(SignResponse::new).toList());
   }
 
-  @GetMapping("/word/{id}")
-  public ResponseEntity<Iterable<SignResponse>> getByWord(@PathVariable Long id) {
-    Optional<Word> word = wordRepository.findById(id);
+  @GetMapping("/{id}")
+  public ResponseEntity<SignResponse> get(@PathVariable Long id) {
+    Optional<Sign> sign = repository.findById(id);
 
-    if (word.isEmpty()) {
+    if (sign.isEmpty())
       return ResponseEntity.notFound().build();
-    }
 
-    List<SignResponse> body = repository.findByWord(word.get()).stream().map(SignResponse::new).toList();
+    return ResponseEntity.ok(new SignResponse(sign.get()));
+  }
+
+  @GetMapping("/word/{id}")
+  public ResponseEntity<Iterable<SignSimpleResponse>> getByWord(@PathVariable Long id) {
+    List<SignSimpleResponse> body = repository.findByWord_Id(id).stream().map(SignSimpleResponse::new).toList();
+
+    if (body.isEmpty())
+      return ResponseEntity.notFound().build();
 
     return ResponseEntity.ok(body);
   }
@@ -101,8 +109,8 @@ public class SignController {
               .body(resource);
   }
 
-  @PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<SignResponse> add(@RequestParam("sign") String signJson, @RequestParam("video") MultipartFile video) {
+  @PostMapping(value = "/new/{main}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<SignResponse> add(@PathVariable("main") String main, @RequestParam("sign") String signJson, @RequestParam("video") MultipartFile video) {
     SignRequest request = objectMapper.readValue(signJson, SignRequest.class);
 
     Optional<Word> word = wordRepository.findById(request.wordId());
@@ -112,6 +120,8 @@ public class SignController {
     if (word.isEmpty() || origin.isEmpty() || hand.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
+
+    Word uWord = word.get();
 
     Variation variation = null;
 
@@ -144,7 +154,12 @@ public class SignController {
       return ResponseEntity.internalServerError().build();
     }
 
-    Sign sign = this.repository.save(new Sign(storedName, word.get(), variation, origin.get(), hand.get()));
+    Sign sign = this.repository.save(new Sign(storedName, uWord, variation, origin.get(), hand.get()));
+
+    if (main.equalsIgnoreCase("true")) {
+      uWord.setMainSign(sign);
+      this.wordRepository.save(uWord);
+    }
 
     return ResponseEntity.ok(new SignResponse(sign));
   }
