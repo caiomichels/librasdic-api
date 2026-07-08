@@ -89,6 +89,16 @@ public class WordController {
     return ResponseEntity.ok(repository.findByWordContainingIgnoreCase(text));
   }
 
+  @GetMapping("/search/example/{text}")
+  public ResponseEntity<Iterable<WordSimpleResponse>> searchExample(@PathVariable String text) {
+    return ResponseEntity.ok(repository.findByExampleContainingIgnoreCase(text));
+  }
+
+  @GetMapping("/search/description/{text}")
+  public ResponseEntity<Iterable<WordSimpleResponse>> searchDescription(@PathVariable String text) {
+    return ResponseEntity.ok(repository.findByDescriptionContainingIgnoreCase(text));
+  }
+
   @GetMapping("/image/{filename}")
   public ResponseEntity<Resource> getImage(@PathVariable String filename) throws Exception {
       Path file = imagesDir.resolve(filename).normalize();
