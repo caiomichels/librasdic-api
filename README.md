@@ -30,9 +30,9 @@ As configurações principais estão em `src/main/resources/application.properti
 
 Ajuste esses valores conforme seu ambiente antes de executar em produção.
 
-## Script de inicialização do banco (`load.sql`)
+## Script de inicialização do banco (`db.sql`, `load_data.sql`)
 
-O projeto utiliza um script SQL chamado `load.sql` para inicializar/popular o banco de dados com dados base da aplicação.
+O projeto utiliza um script SQL chamado `db.sql` para inicializar o banco de dados com dados base da aplicação, e outro `load_data.sql` para popula-lo. Esse seundo é necessário alterar as ocorrências de BASE_PATH para o caminho da pasta startup na sua máquina, por exemplo: `/home/user/workspace/librasdic-api/startup`.
 
 Descrição esperada do script:
 

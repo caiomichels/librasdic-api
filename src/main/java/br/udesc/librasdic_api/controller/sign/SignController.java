@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,6 +87,18 @@ public class SignController {
     }
 
     return ResponseEntity.ok(new SignResponse(sign));
+  }
+
+  @GetMapping("/video/{filename}")
+  public ResponseEntity<Resource> getVideo(@PathVariable String filename) throws Exception {
+      Path file = videosDir.resolve(filename).normalize();
+      Resource resource = new UrlResource(file.toUri());
+
+      String extension = filename.substring(filename.lastIndexOf('.') + 1);
+
+      return ResponseEntity.ok()
+              .contentType(MediaType.parseMediaType("vide/" + extension))
+              .body(resource);
   }
 
   @PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

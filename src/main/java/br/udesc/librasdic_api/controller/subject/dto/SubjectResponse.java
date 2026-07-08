@@ -1,4 +1,4 @@
-package br.udesc.librasdic_api.controller.word.dto;
+package br.udesc.librasdic_api.controller.subject.dto;
 
 import br.udesc.librasdic_api.entity.Origin;
 import br.udesc.librasdic_api.entity.Subject;

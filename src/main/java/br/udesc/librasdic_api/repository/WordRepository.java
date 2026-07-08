@@ -14,4 +14,5 @@ public interface WordRepository extends JpaRepository<Word, Long> {
   List<WordSimpleResponse> findByWordStartingWithIgnoreCase(String prefix);
   List<WordSimpleResponse> findByWordContainingIgnoreCase(String text);
   List<WordSimpleResponse> findBySubject_NameContainingIgnoreCase(String text);
+  List<WordSimpleResponse> findBySubject_Id(Long id);
 }
