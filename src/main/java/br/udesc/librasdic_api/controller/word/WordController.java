@@ -36,7 +36,7 @@ import br.udesc.librasdic_api.entity.Subject;
 import br.udesc.librasdic_api.entity.Word;
 
 @RestController
-@RequestMapping("/word")
+@RequestMapping("/api/word")
 public class WordController {
 
   private final Path imagesDir = Paths.get("words/images");

@@ -12,7 +12,7 @@ import br.udesc.librasdic_api.repository.SubjectRepository;
 import br.udesc.librasdic_api.entity.Subject;
 
 @RestController
-@RequestMapping("/subject")
+@RequestMapping("/api/subject")
 public class SubjectController {
 
   @Autowired

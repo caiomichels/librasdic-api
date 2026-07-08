@@ -35,7 +35,7 @@ import br.udesc.librasdic_api.entity.Variation;
 import br.udesc.librasdic_api.entity.Word;
 
 @RestController
-@RequestMapping("/sign")
+@RequestMapping("/api/sign")
 public class SignController {
 
   private final Path videosDir = Paths.get("signs/videos");
